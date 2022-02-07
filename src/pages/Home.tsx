@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Header } from "../components/Header";
@@ -12,20 +12,26 @@ export function Home() {
   function handleAddTask(newTaskTitle: Task) {
     //TODO - add new task
     if (!newTaskTitle.title) {
-      setMessage("O campo de tarefa não pode ficar fazio!");
+      setMessage("O campo de tarefa não pode ficar vazio!");
+      return;
     }
     setTasks([...tasks, newTaskTitle]);
-
-    console.log(18, tasks);
   }
 
-  function handleToggleTaskDone(id: number) {
+  function handleToggleTaskDone(id: string) {
     //TODO - toggle task done if exists
   }
 
-  function handleRemoveTask(id: number) {
+  function handleRemoveTask(id: string) {
     //TODO - remove task from state
+    tasks.filter((idTask) => idTask === id);
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage("");
+    }, 4000);
+  }, [message]);
 
   return (
     <View style={styles.container}>
@@ -49,7 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#EBEBEB",
     justifyContent: "center",
-    // alignItems: "center",
   },
   message: {
     justifyContent: "center",

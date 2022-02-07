@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   FlatListProps,
 } from "react-native";
+// import CheckBox from "@react-native-community/checkbox";
 import Icon from "react-native-vector-icons/Feather";
 
 import { ItemWrapper } from "./ItemWrapper";
@@ -22,8 +23,8 @@ export interface Task {
 
 interface TasksListProps {
   tasks: Task[];
-  toggleTaskDone: (id: number) => void;
-  removeTask: (id: number) => void;
+  toggleTaskDone: (id: string) => void;
+  removeTask: (id: string) => void;
 }
 
 export function TasksList({
@@ -33,7 +34,7 @@ export function TasksList({
 }: TasksListProps) {
   return (
     <FlatList
-      // data={tasks}
+      data={tasks}
       keyExtractor={(item) => String(item.id)}
       contentContainerStyle={{ paddingBottom: 24 }}
       showsVerticalScrollIndicator={false}
@@ -53,7 +54,6 @@ export function TasksList({
                 >
                   {item.done && <Icon name="check" size={12} color="#FFF" />}
                 </View>
-
                 <Text
                 //TODO - use style prop
                 >
@@ -66,6 +66,9 @@ export function TasksList({
               testID={`trash-${index}`}
               style={{ paddingHorizontal: 24 }}
               //TODO - use onPress (remove task) prop
+              onPress={() => {
+                removeTask(item.id);
+              }}
             >
               <Image source={trashIcon} />
             </TouchableOpacity>
