@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import uuid from "react-native-uuid";
 import { Header } from "../components/Header";
 import { Task, TasksList } from "../components/TasksList";
@@ -10,7 +10,13 @@ export function Home() {
   const [message, setMessage] = useState("");
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const findTask = tasks.find((item) => item.title === newTaskTitle);
+    if (findTask) {
+      return Alert.alert(
+        "Task já cadastrada",
+        "Você não pode cadastrar uma task com o mesmo nome"
+      );
+    }
     const newTask: Task = {
       id: uuid.v4().toString(),
       title: newTaskTitle,
