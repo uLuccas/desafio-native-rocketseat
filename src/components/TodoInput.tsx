@@ -1,22 +1,26 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Task } from "./TasksList";
-import uuid from "react-native-uuid";
 
 interface TodoInputProps {
-  addTask: (task: Task) => void;
+  addTask: (task: string) => void;
 }
 
 export function TodoInput({ addTask }: TodoInputProps) {
-  const [task, setTask] = useState<Task>({} as Task);
-  let test = uuid.v4().toString();
+  const [task, setTask] = useState("");
 
   function handleAddNewTask() {
     //TODO - Call a ddTask if task not empty and clean input value
-    console.log(task);
-
+    if (!task) return Alert.alert("Adicione algum conteúdo no campo de texto.");
     addTask(task);
+    setTask("");
   }
 
   return (
@@ -27,9 +31,9 @@ export function TodoInput({ addTask }: TodoInputProps) {
         placeholderTextColor="#B2B2B2"
         returnKeyType="send"
         selectionColor="#666666"
-        onChangeText={(text) => {
-          setTask({ id: test, title: text, done: false });
-        }}
+        value={task}
+        onChangeText={setTask}
+        onSubmitEditing={handleAddNewTask}
         //TODO - use value, onChangeText and onSubmitEditing props
       />
       <TouchableOpacity

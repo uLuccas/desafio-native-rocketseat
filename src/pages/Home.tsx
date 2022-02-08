@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
+import uuid from "react-native-uuid";
 import { Header } from "../components/Header";
 import { Task, TasksList } from "../components/TasksList";
 import { TodoInput } from "../components/TodoInput";
@@ -9,13 +9,14 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [message, setMessage] = useState("");
 
-  function handleAddTask(newTaskTitle: Task) {
+  function handleAddTask(newTaskTitle: string) {
     //TODO - add new task
-    if (!newTaskTitle.title) {
-      setMessage("O campo de tarefa não pode ficar vazio!");
-      return;
-    }
-    setTasks([...tasks, newTaskTitle]);
+    const newTask: Task = {
+      id: uuid.v4().toString(),
+      title: newTaskTitle,
+      done: false,
+    };
+    setTasks((tasks) => [...tasks, newTask]);
   }
 
   function handleToggleTaskDone(id: string) {
@@ -45,10 +46,6 @@ export function Home() {
     <View style={styles.container}>
       <Header tasksCounter={tasks.length} />
       <TodoInput addTask={handleAddTask} />
-      <View style={styles.message}>
-        <Text style={styles.erro}>{message ? message : ""}</Text>
-      </View>
-
       <TasksList
         tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
