@@ -38,9 +38,25 @@ export function Home() {
   }
 
   function handleRemoveTask(id: string) {
-    const bombeiro = tasks.filter((task) => task.id !== id);
-    setTasks(bombeiro);
+    Alert.alert(
+      "Remover item",
+      "Tem certeza que você deseja remover esse item?",
+      [
+        {
+          text: "Não",
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            const bombeiro = tasks.filter((task) => task.id !== id);
+            setTasks(bombeiro);
+          },
+        },
+      ]
+    );
   }
+
+  function handleEditTask(taskId: number, taskNewTitle: string) {}
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,6 +70,7 @@ export function Home() {
       <TodoInput addTask={handleAddTask} />
       <TasksList
         tasks={tasks}
+        editTask={handleEditTask}
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask}
       />
