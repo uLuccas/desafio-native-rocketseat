@@ -20,11 +20,19 @@ export function Home() {
 
   function handleToggleTaskDone(id: string) {
     //TODO - toggle task done if exists
+    const updatedTasks = tasks.map((tasks) => ({ ...tasks }));
+    const denis = updatedTasks.find((item) => item.id === id);
+    if (denis) {
+      denis.done = !denis.done;
+    }
+
+    setTasks(updatedTasks);
+    console.log(updatedTasks);
   }
 
   function handleRemoveTask(id: string) {
-    //TODO - remove task from state
-    tasks.filter((idTask) => idTask === id);
+    const bombeiro = tasks.filter((task) => task.id !== id);
+    setTasks(bombeiro);
   }
 
   useEffect(() => {
