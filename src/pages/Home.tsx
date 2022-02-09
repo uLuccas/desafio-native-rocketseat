@@ -56,7 +56,20 @@ export function Home() {
     );
   }
 
-  function handleEditTask(taskId: number, taskNewTitle: string) {}
+  function handleEditTask(taskId: string, taskNewTitle: string) {
+    console.log("================= Edit ===================");
+    console.log(taskId);
+    console.log(taskNewTitle);
+
+    const updatedTasks = tasks.map((tasks) => ({ ...tasks }));
+    const upTask = updatedTasks.find((item) => item.id === taskId);
+    if (upTask) {
+      upTask.title = taskNewTitle;
+    }
+
+    setTasks(updatedTasks);
+    console.log(updatedTasks);
+  }
 
   useEffect(() => {
     setTimeout(() => {
