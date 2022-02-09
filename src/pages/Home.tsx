@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import uuid from "react-native-uuid";
 import { Header } from "../components/Header";
 import { Task, TasksList } from "../components/TasksList";
@@ -10,7 +10,13 @@ export function Home() {
   const [message, setMessage] = useState("");
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const findTask = tasks.find((item) => item.title === newTaskTitle);
+    if (findTask) {
+      return Alert.alert(
+        "Task já cadastrada",
+        "Você não pode cadastrar uma task com o mesmo nome"
+      );
+    }
     const newTask: Task = {
       id: uuid.v4().toString(),
       title: newTaskTitle,
@@ -32,8 +38,37 @@ export function Home() {
   }
 
   function handleRemoveTask(id: string) {
-    const bombeiro = tasks.filter((task) => task.id !== id);
-    setTasks(bombeiro);
+    Alert.alert(
+      "Remover item",
+      "Tem certeza que você deseja remover esse item?",
+      [
+        {
+          text: "Não",
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            const bombeiro = tasks.filter((task) => task.id !== id);
+            setTasks(bombeiro);
+          },
+        },
+      ]
+    );
+  }
+
+  function handleEditTask(taskId: string, taskNewTitle: string) {
+    console.log("================= Edit ===================");
+    console.log(taskId);
+    console.log(taskNewTitle);
+
+    const updatedTasks = tasks.map((tasks) => ({ ...tasks }));
+    const upTask = updatedTasks.find((item) => item.id === taskId);
+    if (upTask) {
+      upTask.title = taskNewTitle;
+    }
+
+    setTasks(updatedTasks);
+    console.log(updatedTasks);
   }
 
   useEffect(() => {
@@ -48,6 +83,7 @@ export function Home() {
       <TodoInput addTask={handleAddTask} />
       <TasksList
         tasks={tasks}
+        editTask={handleEditTask}
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask}
       />
